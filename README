@@ -1,0 +1,21 @@
+-------------------------------------------------------------------------------------------
+README
+-------------------------------------------------------------------------------------------
+
+This plugins is a sample plugin that demonstrate the LibreNMS plugin Architecture in the Port Pages. It allows here to shut/no shut a port using IF-MIB::ifAdminStatus.20 = INTEGER: down(2) and IF-MIB::ifAdminStatus.20 = INTEGER: up(1). 
+
+INSTALLATION NOTES : 
+-------------------------------------------------------------------------------------------
+
+- You must install the files in the /opt/librenms/html/plugin directory. 
+- It is necessary to have a RW community declared in the config.php file of LibreNMS : 
+  $config['InterfaceAdminPlugin_snmp_RW'] = "MyLittleRWcommunity";
+- Once the community is added, you can navigate to "Overview/Plugin/Plugin Admin" in LibreNMS and enable the InterfaceAdminPlugin.
+- Then, you can navigate to a switch or network device that implements IF-MIB::ifAdminStatus. Open a port page in the plugins menu_option:
+  https://my.librenms.server/device/device=1/tab=port/port=5/view=plugins/
+- Click on the Enable Port or Disable Port button
+
+-------------------------------------------------------------------------------------------
+https://github.com/PipoCanaja/InterfaceAdminPlugin
+
+
