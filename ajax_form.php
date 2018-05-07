@@ -18,8 +18,6 @@ $init_modules = array('web', 'auth', 'alerts');
 require realpath(__DIR__ . '/../../..') . '/includes/init.php';
 require realpath(__DIR__) . '/include/snmp.inc.php';
 
-use phpseclib\Net\SSH2;
-
 
 set_debug($_REQUEST['debug']);
 
@@ -30,7 +28,7 @@ set_debug($_REQUEST['debug']);
 if (!Auth::user()->hasGlobalAdmin()) {
 	$response = array(
 			'status'  => 'error',
-			'message' => 'Need to be admin',
+			'message' => 'Need to be admin to run this command',
 			);
 	echo _json_encode($response);
 	exit;
@@ -42,12 +40,10 @@ if (preg_match('/^[a-zA-Z0-9\-]+$/', $_POST['type']) == 1) {
 	} else { 
 		$response = array(
 				'status'  => 'error',
-				'message' => 'Function not found '.$_POST['type'],
+				'message' => 'Command not found '.$_POST['type'],
 				);
 		echo _json_encode($response);
 		exit;
-
-		die ('not found '.$_POST['type']);
 	}
 }
 
