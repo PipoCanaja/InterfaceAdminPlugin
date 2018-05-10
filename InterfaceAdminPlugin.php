@@ -16,8 +16,7 @@ namespace LibreNMS\Plugins;
 
 class InterfaceAdminPlugin
 {
-
-	public function menu()
+	public static function menu()
 	{
 		echo '<li><a href="plugin/p=InterfaceAdminPlugin">InterfaceAdminPlugin - Preferences</a></li>';
 	}//end menu()
