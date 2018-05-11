@@ -17,10 +17,6 @@
  * Code displayed when loading the plugin
  */
 
-if ($config['InterfaceAdminPlugin_snmp_RW'] != '') {
-	echo ('The InterfaceAdminPlugin is up and running, and RW community is defined in the config.php');
-} else {
-	echo ('In order to use this Plugin, please define your device SNMP Write community in the config.php file, using the following code : </br> $config["InterfaceAdminPlugin_snmp_RW"] = "MyLittleRWCommunity";');
-}
+echo ('The InterfaceAdminPlugin is up and running');
 
 ?>

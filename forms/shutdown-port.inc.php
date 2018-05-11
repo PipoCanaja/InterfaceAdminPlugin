@@ -62,7 +62,7 @@ if (!is_numeric($device_id)) {
          * Let's do the SNMP Set to the device
          * 
          */
-	$res = snmp_set($device[hostname], ".1.3.6.1.2.1.2.2.1.7.$port[ifIndex]", 'i', 2);
+	$res = snmp_set($device, ".1.3.6.1.2.1.2.2.1.7.$port[ifIndex]", 'i', 2);
 
 
         /* 
@@ -72,7 +72,7 @@ if (!is_numeric($device_id)) {
 	if ($res == false) {
 		$message = 'Could not disable '.$port['ifName'].' port';
 	} elseif ($res == 'community') {
-                $message = 'Community for WR SNMP not provided in config.php';
+                $message = 'Community in LibreNMS is probably ReadOnly. No answer from device with current community';
                 $status = 'error';
 
         } elseif ($res == 'multiple-oid') { 

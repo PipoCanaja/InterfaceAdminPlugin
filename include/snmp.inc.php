@@ -12,9 +12,12 @@
  * the source code distribution for details.
  */
 
+
+include "../../../includes/snmp.inc.php";
+
 /* function snmp_set($device, $oid, $type, $value, $options = null, $mib = null, $mibdir = null)
  * 
- * Execute SNMP Set on device, using $config['InterfaceAdminPlugin_snmp_RW']
+ * Execute SNMP Set on device, using default LibreNMS community settings for current device
  */
 
 function snmp_set($device, $oid, $type, $value, $options = null)
@@ -27,26 +30,25 @@ function snmp_set($device, $oid, $type, $value, $options = null)
 		return 'multiple-oid';
 	}
 
-	if (!isset($config['InterfaceAdminPlugin_snmp_RW']) || $config['InterfaceAdminPlugin_snmp_RW'] == '') {
-		//echo ('No SNMP Write Community provided in config file ( $config["InterfaceAdminPlugin_snmp_RW"])');
-		return 'community';
-	}
-
-	$community = $config['InterfaceAdminPlugin_snmp_RW'];
+	$snmpAuth = snmp_gen_auth($device);
 	$value=addslashes($value);
-	$cmd= "snmpset -v2c $options -c $community $device $oid $type '".$value."'";
+	$cmd= "snmpset $snmpAuth $options ".' '.$device[transport].':'.$device[hostname].':'.$device[port]." $oid $type '".$value."'";
 	$data = trim(external_exec($cmd), "\" \n\r");
 	$res = $data;
 
 	recordSnmpStatistic('snmpset', $time_start);
 	if (preg_match('/(No Such Instance|No Such Object|No more variables left|Authentication failure)/i', $data)) {
 		return false;
-	} elseif ($data || $data === '0') {
-		return $res;
-	} else {
-		return false;
+	} elseif (preg_match('/(No Access)/i', $data)) {
+                return 'community';
+         } elseif ($data || $data === '0') {
+		return $data;
+	} elseif ($data =='') {
+                return 'community';
+        } else {
+		return false; //$cmd." :". $data.":";
 	}
-	return false;
+	return $data;
 }//end snmp_set()
 
 ?>
