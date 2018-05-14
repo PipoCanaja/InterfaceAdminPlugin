@@ -2,18 +2,22 @@
 README
 -------------------------------------------------------------------------------------------
 
-This plugins is a sample plugin that demonstrate the LibreNMS plugin Architecture in the Port Pages. It allows here to shut/no shut a port using IF-MIB::ifAdminStatus.20 = INTEGER: down(2) and IF-MIB::ifAdminStatus.20 = INTEGER: up(1). 
+This plugins is a sample plugin that demonstrate the LibreNMS plugin Architecture in the Port Pages. It allows here to shut/no shut a port using IF-MIB::ifAdminStatus.ifIndex = INTEGER: down(2) and IF-MIB::ifAdminStatus.ifIndex = INTEGER: up(1). 
 
 INSTALLATION NOTES : 
 -------------------------------------------------------------------------------------------
 
 - You must install the files in the /opt/librenms/html/plugin directory. 
-- It is necessary to have a RW community declared in the config.php file of LibreNMS : 
-  $config['InterfaceAdminPlugin_snmp_RW'] = "MyLittleRWcommunity";
-- Once the community is added, you can navigate to "Overview/Plugin/Plugin Admin" in LibreNMS and enable the InterfaceAdminPlugin.
+- It is necessary to have a RW community declared in LibreNMS for the device, because this plugin uses it
+- You can navigate to "Overview/Plugin/Plugin Admin" in LibreNMS and enable the InterfaceAdminPlugin.
 - Then, you can navigate to a switch or network device that implements IF-MIB::ifAdminStatus. Open a port page in the plugins menu_option:
   https://my.librenms.server/device/device=1/tab=port/port=5/view=plugins/
-- Click on the Enable Port or Disable Port button
+- Click on the Enable Port or Disable Port button.
+- If you don't get the expected result, double check that you have SNMP SET access from the LibreNMS machine by testing it in CLI with the following syntax. 
+  -> Interface UP:
+     snmpset -v2c -c <community> <hostname> IF-MIB::ifAdminStatus.<ifIndex> i 1
+  -> Interface DOWN:
+     snmpset -v2c -c <community> <hostname> IF-MIB::ifAdminStatus.<ifIndex> i 2
 
 -------------------------------------------------------------------------------------------
 https://github.com/PipoCanaja/InterfaceAdminPlugin
